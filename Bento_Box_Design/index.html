@@ -11,15 +11,21 @@
 </head>
 
 <style>
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .container {
+        margin-block: auto;
+    }
     .card {
         min-height: 200px;
     }
-
     #bg-card {
         background-image: url('assets/bgpic.gif');
         background-size: cover;
     }
-
     #profile-img-container {
         width: 210px;
         height: 210px;
@@ -42,24 +48,22 @@
                                 <img src="assets/profilepic.jpg" class="w-100 h-100 object-fit-cover">
                             </div>
                             <h4 class="fw-bold mb-1 text-light">Distinct</h4>
-                            <p class="fw-semibold text-secondary small mb-0">Genshin Impact Player</p>
+                            <p class="fw-semibold text-secondary small">Genshin Impact Player</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="row g-3">
                     <div class="col-12 col-md-6">
-                        <div class="card bg-black rounded-4 overflow-hidden"
-                            style="height: 100%; min-height: 200px;">
+                        <div class="card bg-black rounded-4 overflow-hidden" style="height: 100%; min-height: 200px;">
                             <img src="assets/capitano.jpg" class="w-100 h-100" alt="Capitano"
-                                style="object-fit: cover; display: block;">
+                                style="object-fit: cover;">
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
-                        <div class="card bg-black rounded-4 overflow-hidden"
-                            style="height: 100%; min-height: 200px;">
+                        <div class="card bg-black rounded-4 overflow-hidden" style="height: 100%; min-height: 200px;">
                             <img src="assets/dottore.jpg" class="w-100 h-100" alt="Dottore"
-                                style="object-fit: cover; display: block;">
+                                style="object-fit: cover;">
                         </div>
                     </div>
                 </div>
@@ -97,18 +101,15 @@
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="rounded-circle overflow-hidden"
                                             style="width: 40px; height: 40px; flex-shrink: 0;">
-                                            <img src="assets/clock.png" alt="Clock Icon"
-                                                class="w-100 h-100 object-fit-cover">
+                                            <img src="assets/clock.png" class="w-100 h-100 object-fit-cover">
                                         </div>
                                         <span id="live-clock" class="fs-4 fw-semibold text-light"></span>
                                     </div>
 
-
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="rounded-circle overflow-hidden"
                                             style="width: 40px; height: 40px; flex-shrink: 0;">
-                                            <img src="assets/calendar.png" alt="Calendar Icon"
-                                                class="w-100 h-100 object-fit-cover">
+                                            <img src="assets/calendar.png" class="w-100 h-100 object-fit-cover">
                                         </div>
                                         <div class="text-start">
                                             <div id="live-date" class="fw-semibold text-light"></div>
@@ -125,15 +126,13 @@
                             <div class="col-12 col-md-6">
                                 <div class="card bg-black rounded-4 overflow-hidden"
                                     style="height: 100%; min-height: 200px;">
-                                    <img src="assets/columbina.jpg" class="w-100 h-100"
-                                        style="object-fit: cover; display: block;">
+                                    <img src="assets/columbina.jpg" class="w-100 h-100" style="object-fit: cover;">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="card bg-black rounded-4 overflow-hidden"
                                     style="height: 100%; min-height: 200px;">
-                                    <img src="assets/arlecchino.jpg" class="w-100 h-100"
-                                        style="object-fit: cover; display: block;">
+                                    <img src="assets/arlecchino.jpg" class="w-100 h-100" style="object-fit: cover;">
                                 </div>
                             </div>
                         </div>
@@ -141,10 +140,8 @@
                     </div>
 
                     <div class="col-12 col-md-4 p-3">
-                        <div class="card bg-black rounded-4 overflow-hidden"
-                            style="height: 100%; width: 100%;">
-                            <img src="assets/elements.jpg" class="w-100 h-100"
-                                style="object-fit: cover; display: block;">
+                        <div class="card bg-black rounded-4 overflow-hidden" style="height: 100%; width: 100%;">
+                            <img src="assets/elements.jpg" class="w-100 h-100" style="object-fit: cover;">
                         </div>
                     </div>
                 </div>
@@ -153,7 +150,6 @@
 
         </div>
 
-    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
@@ -182,11 +178,10 @@
             const dayString = days[now.getDay()];
             document.getElementById('live-day').textContent = dayString;
         }
-
         updateDateTime();
         setInterval(updateDateTime, 1000);
     </script>
-    
+
 </body>
 
 </html>
