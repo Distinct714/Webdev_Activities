@@ -1,19 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>View</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Character Info - One Piece</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
 <body>
 
+<nav class="navbar navbar-dark bg-black position-fixed top-0 w-100 z-3">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-semibold fs-6 text-decoration-none" id="backlink">
+        <img src="assets/logo.png" class="rounded-circle object-fit-contain" style="width: 32px; height: 32px;">
+        One Piece: Wiki Character Search
+      </a>
+    </div>
+  </nav>
+
+  <div class="container mt-5 pt-5 pb-5">
+
+    <div class="card bg-dark border-secondary rounded-4 p-4 text-center mx-auto" style="max-width: 600px;">
+
+      <div class="bg-black border border-secondary rounded-3 p-4 mb-4">
+        <div class="h1 fw-bold text-white text-uppercase mb-0" style="letter-spacing: 6px">WANTED</div>
+        <div class="fw-bold text-secondary text-uppercase small mb-3" style="letter-spacing: 3px;">DEAD OR ALIVE</div>
+        
+        <img id="image" src="" class="rounded-circle object-fit-cover border border-3 mb-2 bg-dark mx-auto d-block" style="width: 140px; height: 140px;">
+        
+        <h3 id="name" class="fw-bold text-white mb-0 text-uppercase mt-3">Loading...</h3>
+      </div>
+
+      <div class="row text-start g-3 mb-2">
+
+        <div class="col-12">
+          <div class="bg-black p-3 rounded-3 border border-secondary">
+            <h6 class="text-uppercase text-muted fw-bold small mb-1">
+              Bounty
+            </h6>
+            <p id="bounty" class="fs-4 fw-bold text-white mb-0">--</p>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="bg-black p-3 rounded-3 border border-secondary">
+            <h6 class="text-uppercase text-muted fw-bold small mb-1">
+              Devil Fruit
+            </h6>
+            <p id="fruit" class="fs-5 fw-medium text-white mb-0">--</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center mt-4 pt-3">
+        <a id="cardBackBtn" href="index.html" class="btn btn-outline-light px-4">
+          Back to Catalog
+        </a>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+
+  <script>
+    function capitalizeFirstLetter(str) {
+      if (!str) return str;
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    var elName = document.getElementById("name");
+    var elImage = document.getElementById("image");
+    var elBounty = document.getElementById("bounty");
+    var elFruit = document.getElementById("fruit");
+    var elBacklink = document.getElementById("backlink");
+    var elCardBackBtn = document.getElementById("cardBackBtn");
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const id = urlParams.get('id');
+    const page = urlParams.get('page');
+
+    if (page != null) {
+      elBacklink.href = "index.html?page=" + page;
+      elCardBackBtn.href = "index.html?page=" + page;
+      elCardBackBtn.innerHTML = "Back to Page " + page;
+    }
+
+const getCharacter = async () => {
+      elName.innerHTML = "Loading " + id;
+      elImage.src = "";
+      elBounty.innerHTML = "...";
+      elFruit.innerHTML = "...";
+
+      const response = await fetch('https://api.api-onepiece.com/v2/characters/en/' + id);
+      const character = await response.json();
+
+      var name = character.name?.en || character.name || 'Unknown';
+
+      var rawBounty = character.bounty ? String(character.bounty).replaceAll('.', ',') : 'Unknown';
+      var bounty = character.bounty ? '฿ ' + rawBounty : 'Unknown';
+
+      var fruit = character.fruit?.name || character.fruit || character.devil_fruit || 'None';
+      var image = character.avatar || character.image || 'assets/logo.png';
+
+      elName.innerHTML = capitalizeFirstLetter(name);
+      elImage.src = image;
+      elImage.alt = name;
+      elBounty.innerHTML = bounty;
+      elFruit.innerHTML = capitalizeFirstLetter(fruit);
+    };
+
+    if (id != null) {
+      getCharacter();
+    }
+
+  </script>
+
 </body>
 
 </html>
