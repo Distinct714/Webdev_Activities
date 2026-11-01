@@ -2,175 +2,201 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Genshin Impact</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>One Piece: Wiki Character Search</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+    .character-card {
+      background-color: #1a202c;
+      border: 1px solid #2d3748;
+      border-radius: 12px;
+      height: 255px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .character-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+  </style>
 </head>
 
-<body class="bg-black text-white">
+<body>
 
-    <nav class="navbar navbar-dark bg-dark px-4 py-3 m">
-        <div class="container-fluid d-flex justify-content-start align-items-center gap-3">
-            <img src="assets/logo.png" alt="Genshin Logo" style="width: 50px; height: 50px; object-fit: contain;">
-            <span class="navbar-brand mb-0 h4">Genshin Impact: Character Search</span>
-        </div>
-    </nav>
+  <nav class="navbar navbar-dark bg-black position-fixed top-0 w-100 z-3">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-semibold fs-6 text-decoration-none">
+        <img src="assets/logo.png" class="rounded-circle object-fit-contain" style="width: 32px; height: 32px;">
+        One Piece: Wiki Character Search
+      </a>
+    </div>
+  </nav>
 
-    <div class="container my-4 mt-5">
-        <div class="row">
-            <div class="col">
-                <div class="card bg-dark border-secondary rounded-2 p-4 shadow">
-                    <div class="input-group px-5">
-                        <input type="text" class="form-control bg-black text-white border-secondary py-3 px-4"
-                            placeholder="Enter Character Name (e.g., venti, zhongli)" id="searchInput">
-                        <button class="btn btn-outline-secondary bg-dark text-white border-secondary px-4" type="button"
-                            onclick="getCharacter()">
-                            <img src="assets/search.png" alt="Search Icon"
-                                style="width: 40px; height: 40px; object-fit: contain;">
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="container mt-4 py-4 px-5">
+
+    <div class="row mb-3 mt-4">
+      <div class="col-12">
+        <img src="assets/banner.jpg" alt="One Piece Banner" class="w-100 rounded-3 object-fit-cover" style="max-height: 480px;">
+      </div>
     </div>
 
-    <div class="container mb-5">
-        <div class="row g-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-4">
 
-            <div class="col-md-6">
-                <div
-                    class="card bg-dark border-secondary rounded-2 p-5 text-center h-100 d-flex flex-column align-items-center justify-content-center">
-                    <div id="imageContainer"
-                        class="mx-auto border border-secondary rounded-circle d-flex align-items-center justify-content-center mb-4"
-                        style="width: 220px; height: 220px; overflow: hidden;">
-                        <img src="" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="image"
-                            alt="Character Portrait">
-                    </div>
-
-                    <div class="h3 mb-3 fw-bold text-white" id="name">
-                        <div class="spinner-border text-light" role="status">
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-center gap-2 flex-wrap mt-2">
-                        <span class="rounded-2 px-4 py-1 fw-bold text-dark" id="type"></span>
-                        <span class="rounded-2 px-4 py-1 fw-bold bg-black text-white" id="rarity"></span>
-                        <span class="rounded-2 px-4 py-1 fw-bold bg-black text-white" id="weapon"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div
-                    class="card bg-dark border-secondary rounded-2 p-5 text-center h-100 shadow d-flex flex-column align-items-center justify-content-center">
-
-                    <div id="nationImageContainer" class="mx-auto d-flex align-items-center justify-content-center mb-2"
-                        style="width: 220px; height: 220px;">
-                        <img src="" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="nationIcon"
-                            alt="Nation Icon">
-                    </div>
-
-                    <div class="mb-2 d-flex justify-content-center gap-2 flex-wrap">
-                        <span class="px-4 py-2 fw-bold h4 text-white" id="nationBadge"></span>
-                    </div>
-
-                    <p class="text-white-50 px-3 fst-italic" id="description" style="min-height: 80px;"></p>
-                </div>
-            </div>
-
+      <div class="w-100" style="max-width: 450px;">
+        <div class="input-group">
+          <input type="text" id="searchInput" class="form-control bg-dark text-white border-secondary" placeholder="Enter Character Name" oninput="handleSearch()">
+          <button class="btn btn-outline-secondary px-3 text-white" type="button">
+            <img src="assets/search.png" style="width: 20px; height: 20px; object-fit: contain;">
+          </button>
         </div>
+      </div>
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-md mb-0">
+          <li class="page-item" id="prevBtn"><a class="page-link bg-dark text-white border-secondary" role="button" onclick="prev()">Previous</a></li>
+          <li class="page-item disabled"><a class="page-link bg-dark text-white border-secondary" id="currentpage">1</a></li>
+          <li class="page-item" id="nextBtn"><a class="page-link bg-dark text-white border-secondary" role="button" onclick="next()">Next</a></li>
+        </ul>
+      </nav>
     </div>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3 mb-5" id="parent"></div>
+
+
+    <footer class="text-center text-secondary py-4 border-top border-secondary mt-5">
+      <small>Fan-made by Distinct. Images of each character is unavailable on api-onepiece.</small>
+    </footer>
+
+  </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-    <script>
 
-        const element_colors = {
-            anemo: '#74e5BB',
-            geo: '#f8d047',
-            electro: '#b081eb',
-            dendro: '#a5c83b',
-            hydro: '#00c3ff',
-            pyro: '#ff7843',
-            cryo: '#9bedf3'
+  <script>
+    
+    function capitalizeFirstLetter(str) {
+      if (!str) return str;
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    var elCurrentPage = document.getElementById("currentpage");
+    var elParent = document.getElementById("parent");
+    var elSearchInput = document.getElementById("searchInput");
+    var prevBtn = document.getElementById("prevBtn");
+    var nextBtn = document.getElementById("nextBtn");
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var page = urlParams.get('page');
+
+    if(page == null){
+      page = 1;
+    } 
+    else {
+      page = parseInt(page);
+    }
+
+    var allCharacters = [];
+    var filteredCharacters = [];
+    var perPage = 10;
+    var finalPage = 1;
+
+    const getCharacters = async () => {
+      elParent.innerHTML = `
+        <div class="text-center text-muted my-5 w-100">
+          <div class="spinner-border text-light" role="status"></div>
+          <p class="mt-2">Loading character catalog...</p>
+        </div>`;
+
+      const response = await fetch('https://api.api-onepiece.com/v2/characters/en');
+      const data = await response.json();
+      
+      allCharacters = data.map((item, index) => {
+        let name = typeof item.name === 'string' ? item.name : (item.name?.en || item.name?.romaji || item.name?.jp || item.french_name || 'Unknown');
+        return {
+          id: item.id || index + 1,
+          name: name,
+          avatar: item.avatar || item.image || ''
         };
+      });
 
-        function capitalizeFirstLetter(str) {
-            if (!str) return str;
-            return str.charAt(0).toUpperCase() + str.slice(1);
-        }
+      filteredCharacters = allCharacters;
+      finalPage = Math.ceil(filteredCharacters.length / perPage);
+      renderPage();
+    };
 
-        var elName = document.getElementById("name");
-        var elImage = document.getElementById("image");
-        var elType = document.getElementById("type");
-        var elRarity = document.getElementById("rarity");
-        var elWeapon = document.getElementById("weapon");
-        var elNationBadge = document.getElementById("nationBadge");
-        var elNationIcon = document.getElementById("nationIcon");
-        var elDescription = document.getElementById("description");
-        var elImageContainer = document.getElementById("imageContainer");
-        var inSearchInput = document.getElementById("searchInput");
+    function renderPage() {
+      finalPage = Math.ceil(filteredCharacters.length / perPage) || 1;
+      
+      if (page > finalPage) page = finalPage;
+      if (page < 1) page = 1;
 
-        inSearchInput.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                getCharacter();
-            }
-        });
+      elCurrentPage.innerHTML = page;
+      prevBtn.classList.toggle('disabled', page <= 1);
+      nextBtn.classList.toggle('disabled', page >= finalPage);
 
-        const getCharacter = async () => {
-            const query = inSearchInput.value.trim().toLowerCase().replace(/\s+/g, '-');
-            if (!query) return;
+      elParent.innerHTML = '';
 
-            elName.innerHTML = `
-        <div class="spinner-border text-light" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      `;
-            elImage.src = "";
-            elNationIcon.src = "";
-            elType.innerHTML = "";
-            elRarity.innerHTML = "";
-            elWeapon.innerHTML = "";
-            elNationBadge.innerHTML = "";
-            elDescription.innerHTML = "";
-            elImageContainer.style.backgroundColor = "transparent";
+      var startIndex = (page - 1) * perPage;
+      var endIndex = page * perPage;
+      var paginatedItems = filteredCharacters.slice(startIndex, endIndex);
 
-            const response = await fetch(`https://genshin.jmp.blue/characters/${query}`);
+      if (paginatedItems.length === 0) {
+        elParent.innerHTML = `
+          <div class="text-center text-muted my-5 w-100">
+            <h5>No characters found.</h5>
+          </div>`;
+        return;
+      }
 
-            if (!response.ok) {
-                elName.innerHTML = "Character not found!";
-                elNationBadge.innerHTML = "Unknown";
-                elDescription.innerHTML = "Please try searching for another character.";
-                return;
-            }
+      for (var i = 0; i < paginatedItems.length; i++) {
+        var character = paginatedItems[i];
+        var globalIndex = startIndex + i + 1;
+        var profileImg = character.avatar || 'assets/logo.png';
 
-            const character = await response.json();
-            const element = (character.vision || "anemo").toLowerCase();
-            const nationSlug = (character.nation || "").toLowerCase().replace(/\s+/g, '-');
+        elParent.innerHTML += `
+          <div class="col">
+            <a href="view.html?id=${character.id}&page=${page}" class="text-decoration-none">
+              <div class="card character-card p-3 d-flex flex-column justify-content-center align-items-center text-center bg-dark border-secondary shadow-sm">
+                <img src="${profileImg}" class="rounded-circle object-fit-cover mb-2 bg-black" style="width: 64px; height: 64px;" alt="${character.name}">
+                <div class="text-white fw-semibold text-truncate small w-100 px-2">
+                  #${globalIndex} ${capitalizeFirstLetter(character.name)}
+                </div>
+              </div>
+            </a>
+          </div>
+        `;
+      }
+    }
+    
+    function handleSearch() {
+      var query = elSearchInput.value.toLowerCase().trim();
+      filteredCharacters = allCharacters.filter(c => c.name.toLowerCase().includes(query));
+      page = 1;
+      renderPage();
+    }
 
-            elName.innerHTML = capitalizeFirstLetter(character.name || query);
-            elImage.src = `https://genshin.jmp.blue/characters/${query}/icon`;
+    function prev(){
+      page -= 1;
+      if(page < 1){
+        page = finalPage;
+      }
+      renderPage();
+    }
 
-            const bgColor = element_colors[element] || '#F5F5F5';
-            elImageContainer.style.backgroundColor = bgColor;
+    function next(){
+      page += 1;
+      if(page > finalPage){
+        page = 1;
+      }
+      renderPage();
+    }
+    getCharacters();
 
-            elType.innerHTML = (character.vision || "Unknown").toUpperCase();
-            elType.style.backgroundColor = bgColor;
+  </script>
 
-            elRarity.innerHTML = `${character.rarity || '?'}-star`;
-            elWeapon.innerHTML = character.weapon || "Unknown";
-            elNationBadge.innerHTML = character.nation || "Unknown";
-
-            if (nationSlug) {
-                elNationIcon.src = `https://genshin.jmp.blue/nations/${nationSlug}/icon`;
-            }
-            elDescription.innerHTML = character.description ? `“${character.description}”` : "No description available.";
-        }
-
-    </script>
 </body>
 
 </html>
